@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import { useState } from 'react'
+
+const orders = [100, 200, 300];
+const info = {
+  a:1,
+  b:2,
+  c:3
+}
+
+function App () {
+  const [update, setUpdate] = useState(info)
+
+  const handleUpdate = () => {
+    setUpdate(prev => {
+
+      // Xử lý
+
+      return{
+        ...prev,
+        d:4
+      }
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={{padding: 10}}>
+      <h1>{JSON.stringify(update)}</h1>
+      <button onClick={handleUpdate}>Increase</button>
     </div>
-  );
+  ) 
 }
 
 export default App;
