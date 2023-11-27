@@ -1,34 +1,41 @@
-
 import { useState } from 'react'
 
-const orders = [100, 200, 300];
-const info = {
-  a:1,
-  b:2,
-  c:3
-}
+function App(){
 
-function App () {
-  const [update, setUpdate] = useState(info)
+  const [job, setJob] = useState('');
+  const [jobs, setJobs] = useState(() => {
+    const storageJobs = JSON.parse(localStorage.getItem(('jobs')))
 
-  const handleUpdate = () => {
-    setUpdate(prev => {
+    return storageJobs
+  });
 
-      // Xử lý
+  const handleSubmit = () => {
+    setJobs(prev => {
+      const newJobs = [...prev, job]
 
-      return{
-        ...prev,
-        d:4
-      }
+      const jsonJobs = JSON.stringify(newJobs)
+      localStorage.setItem('jobs', jsonJobs)
+
+      return newJobs
     })
+    setJob('')
   }
 
+
   return (
-    <div className="App" style={{padding: 10}}>
-      <h1>{JSON.stringify(update)}</h1>
-      <button onClick={handleUpdate}>Increase</button>
+    <div style={{ padding: 32 }}>
+      <input
+        value = {job}
+        onChange={e => setJob(e.target.value)}
+      />
+      <button onClick={handleSubmit}>Add</button>
+      <ul>
+        {jobs.map((job, index) => (
+          <li key={index}>{job}</li>
+        ))}
+      </ul>
     </div>
-  ) 
+  )
 }
 
 export default App;
