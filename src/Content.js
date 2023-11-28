@@ -42,52 +42,26 @@
 import { useState } from "react"
 import { useEffect } from "react"
 
-const tabs = ['posts', 'comments', 'albums', 'photos', 'todos', 'users']
-
 function Content() {
 
-    const [title, setTitle] = useState('')
-    const [posts, setPosts] = useState([])
-    // const [tabs, setTabs] = useState('posts')
-    const [types, setTypes] = useState('posts')
-
-    console.log(types);
-
+    const [count, setCount] = useState(1)
+    
     useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/${types}`)
-            .then(res => res.json())
-            .then(posts => {
-                setPosts(posts);
-            })
-    }, [types])
+        console.log(`Mount lần ${count}`);
 
-    useEffect(() => {
-        document.title = title;
-    })
+        return(() => {
+            console.log(`Cleanup lần ${count}`);
+        })
+
+    }, [count])
 
     return(
         <div>
-            {tabs.map(tab => (
-                <button
-                    key={tab}
-                    style={types===tab ? {
-                        color: "white",
-                        backgroundColor: "black"
-                    } : {}}
-                    onClick={() => setTypes(tab)}
-                >
-                    {tab}
-                </button>
-            ))}
-            <input 
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-            />
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>{post.title || post.name}</li>
-                ))}
-            </ul>
+            <h1>{count}</h1>
+
+            <button
+                onClick={() => setCount(count + 1)}
+            >Click me</button>
         </div>
     )
 }
