@@ -43,25 +43,32 @@ import { useState } from "react"
 import { useEffect } from "react"
 
 function Content() {
-
-    const [count, setCount] = useState(1)
     
+    const [avatar, setAvatar] = useState()
+
     useEffect(() => {
-        console.log(`Mount lần ${count}`);
-
-        return(() => {
-            console.log(`Cleanup lần ${count}`);
+        return (() => {
+            avatar && URL.revokeObjectURL(avatar.preview)
         })
+    }, [avatar])
 
-    }, [count])
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0]
+
+        file.preview = URL.createObjectURL(file)
+
+        setAvatar(file)
+    }
 
     return(
         <div>
-            <h1>{count}</h1>
-
-            <button
-                onClick={() => setCount(count + 1)}
-            >Click me</button>
+            <input 
+                type="file"
+                onChange={handlePreviewAvatar}
+            />
+            {avatar && (
+                <img src={avatar.preview} width="80%" />
+            )}
         </div>
     )
 }
